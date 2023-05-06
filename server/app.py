@@ -6,14 +6,15 @@ from config import API_KEY
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
-from flask_restful import API,Resource
+from flask_restful import Api,Resource
+from models import Image
 
 app = Flask(__name__)
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///project.db"
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///project.db"
 
-api=API(app)
+api=Api(app)
 db.init_app(app)
 
 
