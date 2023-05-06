@@ -5,6 +5,10 @@ name = "pypi"
 
 [packages]
 openai = "*"
+flask = "*"
+flask-restful = "*"
+flask-sqlalchemy = "*"
+flask-migrate = "*"
 
 [dev-packages]
 

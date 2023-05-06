@@ -3,6 +3,19 @@ import base64
 import requests
 import boto3
 from config import API_KEY
+from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
+from flask_restful import API,Resource
+
+app = Flask(__name__)
+db = SQLAlchemy(app)
+migrate = Migrate(app, db)
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///project.db"
+
+api=API(app)
+db.init_app(app)
+
 
 def get_image():
     openai.api_key=API_KEY
@@ -29,4 +42,5 @@ def upload_image_s3():
     except Exception as e:
         print(f"Error sending file: {e.args}")
 
-upload_image_s3()
+if __name__=="__main__":
+    app.run(port=5555,debug=True)
