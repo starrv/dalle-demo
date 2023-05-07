@@ -2,21 +2,25 @@ import openai
 import base64
 import requests
 import boto3
-from config import API_KEY
-from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate
-from flask_restful import Api,Resource
+from config import app,api,API_KEY
+from flask_restful import Resource
 from models import Image
 
-app = Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///project.db"
-db = SQLAlchemy(app)
-migrate = Migrate(app, db)
+@app.before_request
+def process_request():
+    if(request.endpoint!="images"):
+        return {"error":"forbidden resource"},401
 
-api=Api(app)
-db.init_app(app)
+class Images(Resource):
 
+    def get(self):
+        all=Image.query.all()
+        images=[]
+        for image in all:
+            images.append(image.to_dict())
+        return images,200
+
+api.add_resource(Images,"/images",endpoint="images") 
 
 def get_image():
     openai.api_key=API_KEY
