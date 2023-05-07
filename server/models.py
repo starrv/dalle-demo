@@ -11,3 +11,5 @@ class Image(db.Model,SerializerMixin):
     created_at=db.Column(db.DateTime,server_default=db.func.now())
     updated_at=db.Column(db.DateTime,server_onupdate=db.func.now())
 
+    serialize_rules=("-created_at","-updated_at")
+
